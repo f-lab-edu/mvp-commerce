@@ -3,13 +3,17 @@ package com.jiyong.commerce.repo;
 import com.jiyong.commerce.model.Item;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Repository
 public class MemoryItemRepository implements ItemRepository {
     static long index = 0;
-    Map<Long, Item> repo = new HashMap<>();
+    Map<Long, Item> repo = new ConcurrentHashMap<>();
 
     @Override
     public List<Item> findByItemName(String itemName) {
