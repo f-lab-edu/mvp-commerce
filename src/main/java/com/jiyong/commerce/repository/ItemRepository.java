@@ -9,9 +9,7 @@ public interface ItemRepository {
 
     List<Item> itemList();
 
-    Item findByItemId(Long id);
-
     List<Item> findByItemName(String name);
 
-
+    void deleteAll();
 }

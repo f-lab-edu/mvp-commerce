@@ -7,11 +7,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class MemoryItemRepository implements ItemRepository{
 
-    private static Map<Long, Item> store = new HashMap<>();
+    private static Map<Long, Item> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
     @Override
@@ -28,14 +29,14 @@ public class MemoryItemRepository implements ItemRepository{
     }
 
     @Override
-    public Item findByItemId(Long id) {
-        return store.get(id);
-    }
-
-    @Override
     public List<Item> findByItemName(String name) {
         return store.values().stream()
                 .filter(item -> item.getName().contains(name))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteAll(){
+        store.clear();
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ItemServiceImpl implements ItemService{
+public class MemoryItemServiceImpl implements ItemService{
 
     private final ItemRepository itemRepository = new MemoryItemRepository();
 
