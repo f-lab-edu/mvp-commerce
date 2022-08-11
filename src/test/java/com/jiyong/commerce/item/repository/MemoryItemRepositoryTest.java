@@ -1,28 +1,38 @@
 package com.jiyong.commerce.item.repository;
 
+import com.jiyong.commerce.item.config.TestConfig;
 import com.jiyong.commerce.item.domain.Item;
 import com.jiyong.commerce.item.domain.ItemCategory;
-import com.jiyong.commerce.item.repository.MemoryItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import java.math.BigDecimal;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.*;
 
+
+@SpringBootTest
+@Slf4j
 class MemoryItemRepositoryTest {
-    MemoryItemRepository repository = new MemoryItemRepository();
+
+    @Autowired
+    ItemRepository repository;
 
     ItemCategory 가전 = ItemCategory.builder().categoryId(1L).categoryName("가전").upperCategoryId("").build();
     ItemCategory 패션 = ItemCategory.builder().categoryId(2L).categoryName("패션").upperCategoryId("").build();
     ItemCategory 식품 = ItemCategory.builder().categoryId(3L).categoryName("식품").upperCategoryId("").build();
+    Item mockItem = Item.builder().itemCategory(가전).name("test").price(BigDecimal.valueOf(100)).stock(100L).build();
+
 
     @AfterEach
     public void deleteAll() {
         repository.deleteAll();
     }
-
     @Test
     public void insertItem() {
         //given
@@ -63,6 +73,39 @@ class MemoryItemRepositoryTest {
 
 
     //ToDo delay test
+
+    @Test
+    @DisplayName("Aop 프록시 객체로 사용되는지 테스트")
+    public void mockRepositoryAopConvertTest() {
+        //given
+        //when
+        log.info("repository = {} ",  repository.getClass());
+        boolean jdkDynamicProxy = AopUtils.isJdkDynamicProxy(repository);
+        log.info("jdkDynamicProxy = {} ", jdkDynamicProxy);
+        boolean aopProxy = AopUtils.isAopProxy(repository);
+        log.info("aopProxy = {} ", aopProxy);
+        boolean cglibProxy = AopUtils.isCglibProxy(repository);
+        log.info("cglibProxy = {} ", cglibProxy);
+        //then
+        assertThat(jdkDynamicProxy).isFalse();
+        assertThat(aopProxy).isTrue();
+        assertThat(cglibProxy).isTrue();
+    }
+    @Test
+    @DisplayName("mockRepository Delay테스트")
+    public void mockRepositoryDelayTest() throws Exception{
+            //given
+            //when
+            //then
+            repository.insertItem(mockItem);
+            repository.itemList();
+            repository.deleteAll();
+            repository.findByItemName("test");
+    }
+
+
+
+
 
 
 

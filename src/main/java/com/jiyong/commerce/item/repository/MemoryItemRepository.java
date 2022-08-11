@@ -1,6 +1,7 @@
 package com.jiyong.commerce.item.repository;
 
 import com.jiyong.commerce.item.domain.Item;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +9,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Repository
 public class MemoryItemRepository implements ItemRepository{
 
     private static Map<Long, Item> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
-    //ToDo
-    /**
-     * 성공률 99% (1% = IOException, SocketException, TimeoutException - RuntimeException의 하위, Retryable exponentially 인지 아닌지) AuthorizationException
-     * (Math.random() 0 ~ 1) * 100 < 1
-     * */
 
     @Override
     public Item insertItem(Item item) {
