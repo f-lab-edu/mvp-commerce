@@ -1,13 +1,12 @@
 package com.jiyong.commerce.repository;
 
-import com.jiyong.commerce.domain.item.Item;
-import com.jiyong.commerce.domain.item.ItemCategory;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
+import com.jiyong.commerce.item.domain.Item;
+import com.jiyong.commerce.item.domain.ItemCategory;
+import com.jiyong.commerce.item.repository.MemoryItemRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,9 +26,9 @@ class MemoryItemRepositoryTest {
     @Test
     public void insertItem() {
         //given
-        Item 아이폰13 = Item.builder().itemCategory(가전).name("아이폰13").price(1300000L).stock(100L).build();
-        Item 나이키반팔 = Item.builder().itemCategory(패션).name("나이키반팔").price(50000L).stock(100L).build();
-        Item 닭가슴살 = Item.builder().itemCategory(식품).name("닭가슴살").price(1300L).stock(100L).build();
+        Item 아이폰13 = Item.builder().itemCategory(가전).name("아이폰13").price(BigDecimal.valueOf(1300000L)).stock(100L).build();
+        Item 나이키반팔 = Item.builder().itemCategory(패션).name("나이키반팔").price(BigDecimal.valueOf(50000L)).stock(100L).build();
+        Item 닭가슴살 = Item.builder().itemCategory(식품).name("닭가슴살").price(BigDecimal.valueOf(1300L)).stock(100L).build();
 
         //when
         repository.insertItem(아이폰13);
@@ -45,10 +44,10 @@ class MemoryItemRepositoryTest {
     @Test
     public void findByName() {
         //given
-        Item 아이폰13 = Item.builder().itemCategory(가전).name("아이폰13").price(1300000L).stock(100L).build();
-        Item 나이키반팔 = Item.builder().itemCategory(패션).name("나이키반팔").price(50000L).stock(100L).build();
-        Item 닭가슴살 = Item.builder().itemCategory(식품).name("닭가슴살").price(1300L).stock(100L).build();
-        Item 닭안심 = Item.builder().itemCategory(식품).name("닭안심").price(1300L).stock(100L).build();
+        Item 아이폰13 = Item.builder().itemCategory(가전).name("아이폰13").price(BigDecimal.valueOf(1300000L)).stock(100L).build();
+        Item 나이키반팔 = Item.builder().itemCategory(패션).name("나이키반팔").price(BigDecimal.valueOf(50000L)).stock(100L).build();
+        Item 닭가슴살 = Item.builder().itemCategory(식품).name("닭가슴살").price(BigDecimal.valueOf(1300L)).stock(100L).build();
+        Item 닭안심 = Item.builder().itemCategory(식품).name("닭안심").price(BigDecimal.valueOf(1300L)).stock(100L).build();
         repository.insertItem(아이폰13);
         repository.insertItem(나이키반팔);
         repository.insertItem(닭가슴살);
@@ -60,6 +59,11 @@ class MemoryItemRepositoryTest {
         //then
         assertThat(list.size()).isEqualTo(2);
         assertThat(list).contains(닭가슴살, 닭안심);
-
     }
+
+
+    //ToDo delay test
+
+
+
 }

@@ -1,8 +1,8 @@
-package com.jiyong.commerce.service;
+package com.jiyong.commerce.item.service;
 
-import com.jiyong.commerce.domain.item.Item;
-import com.jiyong.commerce.repository.ItemRepository;
-import com.jiyong.commerce.repository.MemoryItemRepository;
+import com.jiyong.commerce.item.domain.Item;
+import com.jiyong.commerce.item.repository.ItemRepository;
+import com.jiyong.commerce.item.repository.MemoryItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.jiyong.commerce.repository;
+package com.jiyong.commerce.item.repository;
 
-import com.jiyong.commerce.domain.item.Item;
+import com.jiyong.commerce.item.domain.Item;
 
 import java.util.List;
 

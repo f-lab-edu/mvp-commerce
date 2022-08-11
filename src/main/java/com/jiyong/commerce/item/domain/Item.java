@@ -1,4 +1,4 @@
-package com.jiyong.commerce.domain.item;
+package com.jiyong.commerce.item.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -19,6 +21,7 @@ public class Item {
     private Long id;
     private ItemCategory itemCategory;
     private String name;
-    private Long price;
+    private BigDecimal price;
+    //재고
     private Long stock;
 }

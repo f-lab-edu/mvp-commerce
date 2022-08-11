@@ -1,5 +1,6 @@
-package com.jiyong.commerce.domain.user;
+package com.jiyong.commerce.member.domain;
 
+import com.jiyong.commerce.member.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -7,15 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
-public class Seller extends User{
+
+@EqualsAndHashCode(callSuper = true)
+public class Seller extends User {
     private String businessRegistrationNumber;
 
     @Builder

@@ -1,4 +1,4 @@
-package com.jiyong.commerce.domain.user;
+package com.jiyong.commerce.item.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,20 +8,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 @EqualsAndHashCode
-public class User {
-
-    private String id;
-    private String password;
-    private String userType;
-    private String name;
-    private String email;
-    private String address;
-    private String phoneNumber;
-
+public class ItemCategory {
+    private Long categoryId;
+    private String categoryName;
+    private String upperCategoryId;
 }
