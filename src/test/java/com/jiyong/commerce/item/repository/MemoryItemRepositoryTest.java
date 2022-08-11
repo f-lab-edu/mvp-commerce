@@ -1,4 +1,4 @@
-package com.jiyong.commerce.repository;
+package com.jiyong.commerce.item.repository;
 
 import com.jiyong.commerce.item.domain.Item;
 import com.jiyong.commerce.item.domain.ItemCategory;
