@@ -1,5 +1,6 @@
 package com.jiyong.commerce.item.repository;
 
+import com.jiyong.commerce.common.annotation.Retryable;
 import com.jiyong.commerce.item.domain.Item;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Repository
-public class MemoryItemRepository implements ItemRepository{
+@Retryable
+public class MemoryItemRepository implements ItemRepository {
 
     private static Map<Long, Item> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
@@ -37,7 +39,7 @@ public class MemoryItemRepository implements ItemRepository{
     }
 
     @Override
-    public void deleteAll(){
+    public void deleteAll() {
         store.clear();
     }
 }
