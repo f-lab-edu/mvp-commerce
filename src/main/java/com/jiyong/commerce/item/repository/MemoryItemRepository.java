@@ -1,6 +1,7 @@
 package com.jiyong.commerce.item.repository;
 
 import com.jiyong.commerce.item.domain.Item;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Repository
 public class MemoryItemRepository implements ItemRepository{
 
     private static Map<Long, Item> store = new ConcurrentHashMap<>();

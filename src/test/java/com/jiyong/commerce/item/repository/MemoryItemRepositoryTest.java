@@ -5,14 +5,19 @@ import com.jiyong.commerce.item.domain.ItemCategory;
 import com.jiyong.commerce.item.repository.MemoryItemRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@SpringBootTest
 class MemoryItemRepositoryTest {
-    MemoryItemRepository repository = new MemoryItemRepository();
+
+    @Autowired
+    ItemRepository repository;
 
     ItemCategory 가전 = ItemCategory.builder().categoryId(1L).categoryName("가전").upperCategoryId("").build();
     ItemCategory 패션 = ItemCategory.builder().categoryId(2L).categoryName("패션").upperCategoryId("").build();
