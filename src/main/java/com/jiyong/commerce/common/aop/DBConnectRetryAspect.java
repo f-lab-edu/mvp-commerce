@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-import static com.jiyong.commerce.common.util.AspectUtils.sleep;
+import static com.jiyong.commerce.common.util.CommonUtils.sleep;
 
 @Slf4j
 @Aspect

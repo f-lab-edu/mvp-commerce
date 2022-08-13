@@ -12,8 +12,8 @@ import java.net.SocketException;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
-import static com.jiyong.commerce.common.util.AspectUtils.getRandomNumber;
-import static com.jiyong.commerce.common.util.AspectUtils.sleep;
+import static com.jiyong.commerce.common.util.CommonUtils.getRandomNumber;
+import static com.jiyong.commerce.common.util.CommonUtils.sleep;
 
 @Slf4j
 @Aspect
