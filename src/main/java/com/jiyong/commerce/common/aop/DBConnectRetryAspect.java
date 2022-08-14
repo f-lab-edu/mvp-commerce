@@ -2,6 +2,8 @@ package com.jiyong.commerce.common.aop;
 
 import com.jiyong.commerce.common.annotation.Retryable;
 import com.jiyong.commerce.common.exception.RetryLimitExceededException;
+import com.jiyong.commerce.common.util.logtrace.LogTrace;
+import com.jiyong.commerce.common.util.logtrace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,31 +18,39 @@ import static com.jiyong.commerce.common.util.CommonUtils.sleep;
 
 @Slf4j
 @Aspect
-@Order(1)
+@Order(2)
 @Component
 public class DBConnectRetryAspect {
+    private final LogTrace logtrace;
+
+    public DBConnectRetryAspect(LogTrace logtrace) {
+        this.logtrace = logtrace;
+    }
 
     @Around("com.jiyong.commerce.common.aop.Pointcuts.repository()&&@target(annotation)")
     public Object throwAdvice(ProceedingJoinPoint point, Retryable annotation) throws Throwable {
-        log.info("[throwAdvice] 현재 타겟 = {} ", point.getSignature());
+        TraceStatus status = logtrace.begin("DBConnectRetryAspect 현재 타겟 = " + point.toShortString(), null);
         int maxCount = annotation.maxRetryValue();
         int count = 1;
         while (true) {
             try {
-                return point.proceed();
+                Object proceed = point.proceed();
+                logtrace.end(status, null);
+                return proceed;
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
                 if (cause instanceof TimeoutException || cause instanceof IOException) {
-                    log.info("예외 발생 재시도 카운트 = {}/{} , 예외명 ={}", maxCount, count, e.getMessage());
+                    logtrace.keep(status, String.format("예외 발생 재시도 카운트 = %d/%d , 예외명 = %s", maxCount, count, e.getMessage()));
                     if (count >= maxCount) {
                         throw new RetryLimitExceededException("접속 실패");
                     }
                     sleep(500);
                 } else {
+                    logtrace.exception(status, e, null);
                     throw e;
                 }
             } catch (Exception e) {
-                log.info("e.getMessage() = {} ", e.getMessage());
+                logtrace.exception(status, e, null);
                 throw new RuntimeException(e);
             }
             count++;

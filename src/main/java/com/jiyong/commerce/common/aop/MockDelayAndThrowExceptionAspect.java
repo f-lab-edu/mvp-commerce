@@ -1,5 +1,7 @@
 package com.jiyong.commerce.common.aop;
 
+import com.jiyong.commerce.common.util.logtrace.LogTrace;
+import com.jiyong.commerce.common.util.logtrace.TraceStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -18,24 +20,26 @@ import static com.jiyong.commerce.common.util.CommonUtils.sleep;
 @Slf4j
 @Aspect
 @RequiredArgsConstructor
-@Order(2)
+@Order(3)
 public class MockDelayAndThrowExceptionAspect {
 
 
+    private final LogTrace logtrace;
     private final Predicate<Integer> frequency;
 
-    @Around("com.jiyong.commerce.common.aop.Pointcuts.repository()")
-    public Object delayAdvice(ProceedingJoinPoint point) throws Throwable {
-        log.info("[delayAdvice] 현재 타겟 = {} ", point.getSignature());
-        int randomDelay = getRandomNumber(20, 100);
-        log.info("randomDelay = {}ms ", randomDelay);
-        sleep(randomDelay);
 
+    @Around("com.jiyong.commerce.common.aop.Pointcuts.MemoryRepository()")
+    public Object delayAdvice(ProceedingJoinPoint point) throws Throwable {
+        TraceStatus status = logtrace.begin("MockDelayAndThrowExceptionAspect" + point.toShortString(), null);
+        int randomDelay = getRandomNumber(20, 100);
+        sleep(randomDelay);
         try {
             throwException();
-            return point.proceed();
+            Object proceed = point.proceed();
+            logtrace.end(status, null);
+            return proceed;
         } catch (Exception e) {
-            log.info("e.getMessage() = {} ", e.getMessage());
+            logtrace.exception(status, e, null);
             throw e;
         }
     }
