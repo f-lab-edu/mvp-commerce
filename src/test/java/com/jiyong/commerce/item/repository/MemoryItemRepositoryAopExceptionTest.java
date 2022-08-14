@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @SpringBootTest
 class MemoryItemRepositoryAopExceptionTest {
 
-    ItemCategory 가전 = ItemCategory.builder().categoryId(1L).categoryName("가전").upperCategoryId("").build();
+    ItemCategory 가전 = ItemCategory.builder().categoryId(1L).categoryName("가전").upperCategory(null).build();
     Item mockItem = Item.builder().itemCategory(가전).name("test").price(BigDecimal.valueOf(100)).stock(100L).build();
     @Autowired
     private ItemRepository mockRepository;
@@ -32,7 +32,7 @@ class MemoryItemRepositoryAopExceptionTest {
         //when
         //then
         Assertions.assertThatThrownBy(() -> {
-            mockRepository.insertItem(mockItem);
+            mockRepository.save(mockItem);
         }).isInstanceOf(RetryLimitExceededException.class);
     }
 
