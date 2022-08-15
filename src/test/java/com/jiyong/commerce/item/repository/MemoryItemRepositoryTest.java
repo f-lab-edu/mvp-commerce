@@ -3,6 +3,7 @@ package com.jiyong.commerce.item.repository;
 import com.jiyong.commerce.item.domain.Item;
 import com.jiyong.commerce.item.domain.ItemCategory;
 import com.jiyong.commerce.item.repository.MemoryItemRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,17 @@ class MemoryItemRepositoryTest {
     }
 
 
-    //ToDo delay test
+    @Test
+    public void timeDelayTest() {
+        //given
 
+        //when
+        long start = System.currentTimeMillis();
+        repository.itemList();
+        long finish = System.currentTimeMillis();
+        long timeMs = finish - start;
 
-
+        //then
+        assertThat(timeMs).isGreaterThanOrEqualTo(100L);
+    }
 }
