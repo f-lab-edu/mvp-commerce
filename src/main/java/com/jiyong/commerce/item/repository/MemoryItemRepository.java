@@ -1,31 +1,30 @@
 package com.jiyong.commerce.item.repository;
 
-import com.jiyong.commerce.common.annotation.Retry;
+import com.jiyong.commerce.common.annotation.Retryable;
 import com.jiyong.commerce.item.domain.Item;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Repository
-@Retry
-public class MemoryItemRepository implements ItemRepository{
+@Retryable
+public class MemoryItemRepository implements ItemRepository {
 
     private static Map<Long, Item> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
+
     @Override
-    public Item insertItem(Item item) {
-        item.setId(++sequence);
+    public Item save(Item item) {
+        item.setMockId(++sequence);
         store.put(item.getId(), item);
         return item;
     }
 
     @Override
-    public List<Item> itemList() {
+    public List<Item> findAll() {
         List<Item> list = new ArrayList<>(store.values());
         return list;
     }
@@ -38,7 +37,30 @@ public class MemoryItemRepository implements ItemRepository{
     }
 
     @Override
-    public void deleteAll(){
+    public void deleteAll() {
         store.clear();
+    }
+
+    @Override
+
+    public Item update(Item item) {
+        delete(item.getId());
+        store.put(item.getId(), item);
+        return item;
+
+
+    }
+
+    @Override
+    public void delete(Long itemId) {
+        Long deleteItemId = store.entrySet().stream().parallel().filter(i -> i.getValue().getId().equals(itemId)).map(Map.Entry::getKey).findFirst().get();
+        store.remove(deleteItemId);
+    }
+
+    @Override
+    public Item findById(Long itemId) {
+        Optional<Item> findItem = store.values().stream()
+                .filter(item -> item.getId().equals(itemId)).findAny();
+        return findItem.orElseThrow(() -> new NoSuchElementException("없는 상품"));
     }
 }

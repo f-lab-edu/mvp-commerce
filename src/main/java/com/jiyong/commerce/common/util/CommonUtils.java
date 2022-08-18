@@ -3,6 +3,7 @@ package com.jiyong.commerce.common.util;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommonUtils {
+
     public static void sleep(int delay) {
         try {
             Thread.sleep(delay);
@@ -17,4 +18,5 @@ public class CommonUtils {
         }
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
+
 }
