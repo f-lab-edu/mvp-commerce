@@ -9,12 +9,12 @@ public class Pointcuts {
     }
 
     @Pointcut("execution(* *..*Memory*Repository.*(..))")
+
     public void MemoryRepository() {
     }
 
     @Pointcut("execution(* com.jiyong.commerce..*(..)) && (within(@org.springframework.web.bind.annotation.RestController *) || within(@org.springframework.stereotype.Service *) || within(@org.springframework.stereotype.Repository *))")
     public void ControllerAndServiceAndRepository() {
     }
-
 
 }

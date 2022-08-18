@@ -1,6 +1,5 @@
 package com.jiyong.commerce.common.util;
 
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommonUtils {
@@ -19,6 +18,5 @@ public class CommonUtils {
         }
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
-
 
 }
