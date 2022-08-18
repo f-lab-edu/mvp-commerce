@@ -1,17 +1,10 @@
 package com.jiyong.commerce.item.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -24,4 +17,15 @@ public class Item {
     private BigDecimal price;
     //재고
     private Long stock;
+
+    public void setMockId(Long id) {
+        this.id = id;
+    }
+
+    public void update(Item newItem) {
+        this.itemCategory = newItem.itemCategory;
+        this.name = newItem.name;
+        this.price = newItem.price;
+        this.stock = newItem.stock;
+    }
 }

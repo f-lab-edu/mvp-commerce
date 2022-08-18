@@ -6,9 +6,17 @@ import java.util.List;
 
 public interface ItemService {
 
-    Item saveItem(Item item);
+    Item addItem(Item item);
 
-    List<Item> itemList(Item item);
+    List<Item> getItems();
 
-    List<Item> findByItemName(String name);
+    List<Item> searchByName(String name);
+
+    Item modifyItem(Long itemId, Item newItem);
+
+    Item getItem(Long itemId);
+
+    void removeItem(Long itemId);
+
+
 }
