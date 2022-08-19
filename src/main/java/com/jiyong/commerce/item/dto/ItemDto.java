@@ -18,8 +18,7 @@ public class ItemDto {
     @ToString
     @Getter
     public static class Request {
-        @NotBlank
-        private Long id;
+
         @NotBlank
         private ItemCategoryDto.Request itemCategoryDto;
 
@@ -43,7 +42,6 @@ public class ItemDto {
                     .price(price)
                     .stock(stock)
                     .name(name)
-                    .id(id)
                     .build();
         }
     }
