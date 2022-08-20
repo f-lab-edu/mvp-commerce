@@ -20,13 +20,9 @@ public class LoggingAspect {
         this.logtrace = logtrace;
     }
 
-
     @Around("com.jiyong.commerce.common.aop.Pointcuts.ControllerAndServiceAndRepository())")
     public Object loggerAspect(ProceedingJoinPoint joinPoint) throws Throwable {
-        String methodSignature = joinPoint.getSignature().toShortString();
-
-
-        TraceStatus status = logtrace.begin(methodSignature, joinPoint.getArgs());
+        TraceStatus status = logtrace.begin("LoggingAspect 현재 타겟 = " + joinPoint.toShortString(), null);
         try {
             Object proceed = joinPoint.proceed();
             logtrace.end(status, String.valueOf(proceed));

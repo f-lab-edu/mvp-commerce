@@ -5,6 +5,7 @@ import com.jiyong.commerce.common.exception.RetryLimitExceededException;
 import com.jiyong.commerce.common.util.logtrace.LogTrace;
 import com.jiyong.commerce.common.util.logtrace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 import static com.jiyong.commerce.common.util.CommonUtils.sleep;
+
 
 @Slf4j
 @Aspect
@@ -27,20 +29,18 @@ public class DBConnectRetryAspect {
     }
 
     @Around("com.jiyong.commerce.common.aop.Pointcuts.repository()&&@target(annotation)")
-    public Object throwAdvice(ProceedingJoinPoint point, Retryable annotation) throws Throwable {
-        TraceStatus status = logtrace.begin("DBConnectRetryAspect 현재 타겟 = " + point.toShortString(), null);
+    public Object throwAdvice(ProceedingJoinPoint joinPoint, Retryable annotation) throws Throwable {
+        TraceStatus status = logtrace.begin("DBConnectRetryAspect 현재 타겟 = " + joinPoint.toShortString(), null);
         int maxCount = annotation.maxRetryValue();
         Class<? extends Exception>[] exception = annotation.exception();
-
         int count = 1;
         while (true) {
             try {
-                Object proceed = point.proceed();
+                Object proceed = joinPoint.proceed();
                 logtrace.end(status, null);
                 return proceed;
             } catch (RuntimeException e) {
-                Throwable cause = e.getCause();
-                boolean exceptionCheck = Arrays.stream(exception).anyMatch(i -> cause.getClass().equals(i));
+                boolean exceptionCheck = Arrays.stream(exception).anyMatch(i -> ExceptionUtils.indexOfType(e, i) != -1);
                 if (exceptionCheck) {
                     logtrace.keep(status, String.format("예외 발생 재시도 카운트 = %d/%d , 예외명 = %s", maxCount, count, e.getMessage()));
                     if (count >= maxCount) {
@@ -53,7 +53,7 @@ public class DBConnectRetryAspect {
                 }
             } catch (Exception e) {
                 logtrace.exception(status, e, null);
-                throw new RuntimeException(e);
+                throw e;
             }
             count++;
         }
