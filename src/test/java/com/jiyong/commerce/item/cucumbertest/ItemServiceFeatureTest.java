@@ -1,4 +1,4 @@
-package com.jiyong.commerce.item.cucumberTest;
+package com.jiyong.commerce.item.cucumbertest;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;

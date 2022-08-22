@@ -1,7 +1,7 @@
-package com.jiyong.commerce.item.cucumberTest;
+package com.jiyong.commerce.item.cucumbertest;
 
-import com.jiyong.commerce.item.dto.ItemCategoryDto;
 import com.jiyong.commerce.item.dto.ItemDto;
+import com.jiyong.commerce.itemCategory.dto.ItemCategoryDto;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
