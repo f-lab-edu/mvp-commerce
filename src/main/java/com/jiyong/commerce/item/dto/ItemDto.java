@@ -2,6 +2,7 @@ package com.jiyong.commerce.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jiyong.commerce.item.domain.Item;
+import com.jiyong.commerce.itemCategory.dto.ItemCategoryDto;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 

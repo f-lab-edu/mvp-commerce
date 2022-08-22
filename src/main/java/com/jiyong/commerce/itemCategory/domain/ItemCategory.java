@@ -1,4 +1,4 @@
-package com.jiyong.commerce.item.domain;
+package com.jiyong.commerce.itemCategory.domain;
 
 import lombok.*;
 
@@ -9,7 +9,12 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode
 public class ItemCategory {
-    private Long categoryId;
+    private Long id;
     private String categoryName;
     private ItemCategory upperCategory;
+
+    public void setMockId(Long categoryId) {
+        this.id = categoryId;
+    }
+
 }

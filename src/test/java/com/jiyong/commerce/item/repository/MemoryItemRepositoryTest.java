@@ -1,7 +1,7 @@
 package com.jiyong.commerce.item.repository;
 
 import com.jiyong.commerce.item.domain.Item;
-import com.jiyong.commerce.item.domain.ItemCategory;
+import com.jiyong.commerce.itemCategory.domain.ItemCategory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,9 +23,9 @@ class MemoryItemRepositoryTest {
     @Autowired
     ItemRepository repository;
 
-    ItemCategory 가전 = ItemCategory.builder().categoryId(1L).categoryName("가전").upperCategory(null).build();
-    ItemCategory 패션 = ItemCategory.builder().categoryId(2L).categoryName("패션").upperCategory(null).build();
-    ItemCategory 식품 = ItemCategory.builder().categoryId(3L).categoryName("식품").upperCategory(null).build();
+    ItemCategory 가전 = ItemCategory.builder().id(1L).categoryName("가전").upperCategory(null).build();
+    ItemCategory 패션 = ItemCategory.builder().id(2L).categoryName("패션").upperCategory(null).build();
+    ItemCategory 식품 = ItemCategory.builder().id(3L).categoryName("식품").upperCategory(null).build();
     Item mockItem = Item.builder().itemCategory(가전).name("test").price(BigDecimal.valueOf(100)).stock(100L).build();
 
 

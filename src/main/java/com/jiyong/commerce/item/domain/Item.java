@@ -1,5 +1,6 @@
 package com.jiyong.commerce.item.domain;
 
+import com.jiyong.commerce.itemCategory.domain.ItemCategory;
 import lombok.*;
 
 import java.math.BigDecimal;
