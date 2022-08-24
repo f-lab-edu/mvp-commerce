@@ -1,7 +1,6 @@
 package com.jiyong.commerce.item.cucumbertest;
 
 import com.jiyong.commerce.item.dto.ItemDto;
-import com.jiyong.commerce.itemCategory.dto.ItemCategoryDto;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
@@ -10,15 +9,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.math.BigDecimal;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @CucumberContextConfiguration
@@ -37,24 +38,79 @@ public class SpringItemApi {
     }
 
     @Test
-    public void itemSaveApiTest(String itemName, BigDecimal itemPrice, Long stock, String firstCategoryName, Long firstCategoryId, String secondCategoryName, Long secondCategoryId) throws Exception {
+    @Rollback(false)
+    public ItemDto.Response itemSaveApiTest(ItemDto.Request dto) throws Exception {
         //given
-        log.info("itemName = {} ", itemName);
-        ItemDto.Request request = new ItemDto.Request(new ItemCategoryDto.Request(firstCategoryId, firstCategoryName, new ItemCategoryDto.Request(secondCategoryId, secondCategoryName, null)), itemName, itemPrice, stock);
         MockHttpServletRequestBuilder post = MockMvcRequestBuilders
                 .put("/items")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(request));
+                .content(new Gson().toJson(dto));
         //when
-        mvc.perform(post)
-                .andDo(MockMvcResultHandlers.print())
+        ResultActions resultActions = mvc.perform(post)
+                .andDo(print())
                 //then
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$..[?(@.name == '%s')]", itemName).exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$..[?(@.price == '%f')]", itemPrice).exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$..[?(@.stock == '%d')]", stock).exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$..itemCategoryDto[?(@.categoryName == '%s')]", firstCategoryName).exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$..itemCategoryDto.upperCategory[?(@.categoryName == '%s')]", secondCategoryName).exists());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..[?(@.name == '%s')]", dto.getName()).exists())
+                .andExpect(jsonPath("$..[?(@.price == '%f')]", dto.getPrice()).exists())
+                .andExpect(jsonPath("$..[?(@.stock == '%d')]", dto.getStock()).exists());
+        ItemDto.Response response = new Gson().fromJson(resultActions.andReturn().getResponse().getContentAsString(), ItemDto.Response.class);
+        return response;
+    }
+
+    @Test
+    @Rollback(false)
+    public ItemDto.Response itemUpdateApiTest(Long itemId, ItemDto.Request dto) throws Exception {
+        //given
+        MockHttpServletRequestBuilder post = MockMvcRequestBuilders
+                .post("/items/" + itemId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(dto));
+        //when
+        ResultActions resultActions = mvc.perform(post)
+                .andDo(print())
+                //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..[?(@.name == '%s')]", dto.getName()).exists())
+                .andExpect(jsonPath("$..[?(@.id == '%d')]", itemId).exists())
+                .andExpect(jsonPath("$..[?(@.price == '%f')]", dto.getPrice()).exists())
+                .andExpect(jsonPath("$..[?(@.stock == '%d')]", dto.getStock()).exists());
+
+        ItemDto.Response response = new Gson().fromJson(resultActions.andReturn().getResponse().getContentAsString(), ItemDto.Response.class);
+        return response;
+    }
+
+    @Test
+    @Rollback(false)
+    public void itemUpdateApiExceptionTest(Long itemId, ItemDto.Request dto) throws Exception {
+        //given
+        MockHttpServletRequestBuilder post = MockMvcRequestBuilders
+                .post("/items/" + itemId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(dto));
+        //when
+        ResultActions resultActions = mvc.perform(post)
+                .andDo(print())
+                //then
+                .andExpect(status().isServiceUnavailable());
+    }
+
+
+    @Test
+    public ItemDto.Response itemDetailSearchApiTest(Long itemId) throws Exception {
+
+        //given
+        MockHttpServletRequestBuilder get = MockMvcRequestBuilders
+                .get("/items/" + itemId)
+                .accept(MediaType.APPLICATION_JSON);
+        //when
+        ResultActions resultActions = mvc.perform(get)
+                .andDo(print())
+                //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..[?(@.id == '%d')]", itemId).exists());
+        //then
+        ItemDto.Response response = new Gson().fromJson(resultActions.andReturn().getResponse().getContentAsString(), ItemDto.Response.class);
+        return response;
     }
 
 
