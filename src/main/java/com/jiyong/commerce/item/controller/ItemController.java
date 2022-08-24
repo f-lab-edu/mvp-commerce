@@ -32,7 +32,7 @@ public class ItemController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/{search}/search")
+    @GetMapping("/search/{search}")
     public ResponseEntity<List<ItemDto.SimpleResponse>> itemSearch(@PathVariable String search) {
         List<ItemDto.SimpleResponse> searchList = itemService.searchByName(search).parallelStream().map(ItemDto.SimpleResponse::new).collect(Collectors.toList());
         return ResponseEntity.ok(searchList);
