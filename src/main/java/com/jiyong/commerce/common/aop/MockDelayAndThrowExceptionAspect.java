@@ -29,13 +29,13 @@ public class MockDelayAndThrowExceptionAspect {
 
 
     @Around("com.jiyong.commerce.common.aop.Pointcuts.MemoryRepository()")
-    public Object delayAdvice(ProceedingJoinPoint point) throws Throwable {
-        TraceStatus status = logtrace.begin("MockDelayAndThrowExceptionAspect" + point.toShortString(), null);
+    public Object delayAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
+        TraceStatus status = logtrace.begin("MockDelayAndThrowExceptionAspect 현재 타겟 = " + joinPoint.toShortString(), null);
         int randomDelay = getRandomNumber(20, 100);
         sleep(randomDelay);
         try {
             throwException();
-            Object proceed = point.proceed();
+            Object proceed = joinPoint.proceed();
             logtrace.end(status, null);
             return proceed;
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.jiyong.commerce.item.domain;
 
+import com.jiyong.commerce.item.exception.OutOfStockException;
+import com.jiyong.commerce.itemCategory.domain.ItemCategory;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -26,6 +28,9 @@ public class Item {
         this.itemCategory = newItem.itemCategory;
         this.name = newItem.name;
         this.price = newItem.price;
+        if (newItem.stock < 0) {
+            throw new OutOfStockException("상품의 개수는 0개 이하가 될수없습니다");
+        }
         this.stock = newItem.stock;
     }
 }

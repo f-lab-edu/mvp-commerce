@@ -2,6 +2,7 @@ package com.jiyong.commerce.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jiyong.commerce.item.domain.Item;
+import com.jiyong.commerce.itemCategory.dto.ItemCategoryDto;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -17,9 +18,9 @@ public class ItemDto {
     @AllArgsConstructor
     @ToString
     @Getter
+    @EqualsAndHashCode
     public static class Request {
-        @NotBlank
-        private Long id;
+
         @NotBlank
         private ItemCategoryDto.Request itemCategoryDto;
 
@@ -43,7 +44,6 @@ public class ItemDto {
                     .price(price)
                     .stock(stock)
                     .name(name)
-                    .id(id)
                     .build();
         }
     }

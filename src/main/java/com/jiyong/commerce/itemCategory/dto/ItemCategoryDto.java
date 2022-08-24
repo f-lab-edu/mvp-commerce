@@ -1,7 +1,7 @@
-package com.jiyong.commerce.item.dto;
+package com.jiyong.commerce.itemCategory.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.jiyong.commerce.item.domain.ItemCategory;
+import com.jiyong.commerce.itemCategory.domain.ItemCategory;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -14,8 +14,9 @@ public class ItemCategoryDto {
     @AllArgsConstructor
     @ToString
     @Getter
+    @EqualsAndHashCode
     public static class Request {
-        @NotBlank
+
         private Long id;
         @NotBlank
         @Length(min = 1, max = 100)
@@ -25,12 +26,15 @@ public class ItemCategoryDto {
 
         public ItemCategory toEntity() {
             if (upperCategory == null) {
-                return ItemCategory.builder().categoryName(categoryName).upperCategory(null).categoryId(id).build();
+                return ItemCategory.builder().categoryName(categoryName).upperCategory(null).id(id).build();
             } else {
-                return ItemCategory.builder().categoryName(categoryName).upperCategory(upperCategory.toEntity()).categoryId(id).build();
+                return ItemCategory.builder().categoryName(categoryName).upperCategory(upperCategory.toEntity()).id(id).build();
             }
         }
 
+        public void addUpperCategory(Request upperCategory) {
+            this.upperCategory = upperCategory;
+        }
     }
 
 
@@ -58,6 +62,7 @@ public class ItemCategoryDto {
         public SimpleResponse(String categoryName) {
             this.categoryName = categoryName;
         }
+
 
         public SimpleResponse(ItemCategory itemCategory) {
             this.categoryName = itemCategory.getCategoryName();
