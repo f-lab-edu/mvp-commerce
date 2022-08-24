@@ -18,6 +18,7 @@ public class ItemDto {
     @AllArgsConstructor
     @ToString
     @Getter
+    @EqualsAndHashCode
     public static class Request {
 
         @NotBlank

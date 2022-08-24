@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class ItemCategoryServiceFeatureTest extends SpringItemCategoryApi {
+public class ItemCategoryServiceFeatureSteps extends SpringItemCategoryApi {
     @Before
     public void setUp() {
         initMockMvc();

@@ -14,6 +14,7 @@ public class ItemCategoryDto {
     @AllArgsConstructor
     @ToString
     @Getter
+    @EqualsAndHashCode
     public static class Request {
 
         private Long id;
